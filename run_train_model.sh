@@ -1,3 +1,4 @@
+#!/bin/bash
 source ~/.bashrc
 
 if [ ! -d ./data/DF_img_pose/DF_train_data ]; then
