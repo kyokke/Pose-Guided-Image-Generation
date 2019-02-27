@@ -5,7 +5,7 @@ import sys
 
 import torch
 import torch.utils.data
-
+import pickle
 import numpy as np
 import scipy.io
 import scipy.stats
@@ -207,23 +207,26 @@ class PoseDataset(torch.utils.data.Dataset):
         while True:
             USE_FLIP = index >= len(self.p_pairs)
             if USE_FLIP:
-                example = _format_data(self.folder_path_flip, p_pairs_flip, index - len(self.p_pairs), self.all_peaks_dic_flip, self.subsets_dic_flip)
+                example = _format_data(self.folder_path_flip, self.p_pairs_flip, index - len(self.p_pairs), self.all_peaks_dic_flip, self.subsets_dic_flip)
                 if example:
                     return example
-                index = (index + 1) % length
+                index = (index + 1) % self.length
             else:
-                example = _format_data(self.folder_path, p_pairs, index, self.all_peaks_dic, self.subsets_dic)
+                example = _format_data(self.folder_path, self.p_pairs, index, self.all_peaks_dic, self.subsets_dic)
                 if example:
                     return example
-                index = (index + 1) % length
+                index = (index + 1) % self.length
 
 
-    def get_loader(dataset_dir, batch_size):
-        pose_dataset = PoseDataset(os.path.join(dataset_dir, 'DF_train_data'),
-                                   os.path.join(dataset_dir, 'filted_up_train'),
-                                   os.path.join(dataset_dir, 'filted_up_train_flip'),
-                                   os.path.join(dataset_dir, 'PoseFiltered', 'all_peaks_dic_DeepFashion.p'),
-                                   os.path.join(dataset_dir, 'PoseFiltered', 'subsets_dic_DeepFashion.p'),
-                                   os.path.join(dataset_dir, 'PoseFiltered', 'all_peaks_dic_DeepFashion_Flip.p'),
-                                   os.path.join(dataset_dir, 'PoseFiltered', 'subsets_dic_DeepFashion_Flip.p'))
-        pose_loader = torch.utils.data.DataLoader(pose_dataset, batch_size=batch_size, shuffle=True, num_workers=2)
+def get_loader(dataset_dir, batch_size):
+    pose_dataset = PoseDataset(os.path.join(dataset_dir, 'DF_train_data'),
+                               os.path.join(dataset_dir, 'filted_up_train'),
+                               os.path.join(dataset_dir, 'filted_up_train_flip'),
+                               os.path.join(dataset_dir, 'PoseFiltered', 'all_peaks_dic_DeepFashion.p'),
+                               os.path.join(dataset_dir, 'PoseFiltered', 'subsets_dic_DeepFashion.p'),
+                               os.path.join(dataset_dir, 'PoseFiltered', 'all_peaks_dic_DeepFashion_Flip.p'),
+                               os.path.join(dataset_dir, 'PoseFiltered', 'subsets_dic_DeepFashion_Flip.p'))
+    pose_loader = torch.utils.data.DataLoader(pose_dataset, batch_size=batch_size, shuffle=True, num_workers=4)
+    return pose_loader
+
+
