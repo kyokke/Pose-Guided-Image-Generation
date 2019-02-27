@@ -12,8 +12,11 @@ parser.add_argument('--img_W', type=int, default=256,
                      help='input image width')
 parser.add_argument('--repeat_num', type=int, default=6,
                      help='number of blocks in the paper')
-parser.add_argument('--conv_hidden_num', type=int, default=128,
-                     choices=[64, 128], help='n in the paper')
+# parser.add_argument('--conv_hidden_num', type=int, default=128,
+#                      choices=[64, 128], help='n in the paper')
+parser.add_argument('--hidden_num', type=int, default=128,
+                      choices=[64, 128], help='n in the paper')
+
 parser.add_argument('--z_num', type=int, default=64)
 
 parser.add_argument('--batch_size', type=int, default=16)
