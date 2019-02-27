@@ -1,4 +1,9 @@
-./data/*
-./python-version
 
-./idea
+.python-version
+.idea/*
+.ipynb_checkpoints/*
+__pycache__/*
+
+env/*
+
+data/*
