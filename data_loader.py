@@ -133,15 +133,16 @@ def _get_valid_peaks(all_peaks, subsets):
 
 
 def _format_data(folder_path, pairs, i, all_peaks_dic, subsets_dic):
-    # Read the filename:
-    img_path_0 = os.path.join(folder_path, pairs[i][0])
-    img_path_1 = os.path.join(folder_path, pairs[i][1])
-    image_raw_0 = misc.imread(img_path_0)
-    image_raw_1 = misc.imread(img_path_1)
-    height, width = image_raw_0.shape[1], image_raw_0.shape[0]
 
     ########################## Pose 16x8 & Pose coodinate (for 128x64(Solid) 128x64(Gaussian))##########################
     if (all_peaks_dic is not None) and (pairs[i][0] in all_peaks_dic) and (pairs[i][1] in all_peaks_dic):
+        # Read the filename:
+        img_path_0 = os.path.join(folder_path, pairs[i][0])
+        img_path_1 = os.path.join(folder_path, pairs[i][1])
+        image_raw_0 = misc.imread(img_path_0)
+        image_raw_1 = misc.imread(img_path_1)
+        height, width = image_raw_0.shape[1], image_raw_0.shape[0]
+        
         ## Pose 1
         peaks = _get_valid_peaks(all_peaks_dic[pairs[i][1]], subsets_dic[pairs[i][1]])
         indices_r4_1, shape = _getSparsePose(peaks, height, width, 18, radius=4, mode='Solid')
